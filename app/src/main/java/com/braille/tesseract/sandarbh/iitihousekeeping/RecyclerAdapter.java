@@ -158,6 +158,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Reques
                                     tmp.Stu_Check = true;
                                     holder.checkStu.setChecked(true);
                                     holder.checkStu.setEnabled(false);
+                                    DatabaseReference request = FirebaseDatabase.getInstance().getReference()
+                                            .child(tmp.RoomNo).child(tmp.Key).child("Stu_Check");
+                                    Log.e("DEBUG","Updating : "+request.getKey());
+
+                                    request.setValue(true).addOnCompleteListener((Activity) context, new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                Log.e("DEBUG","UPDATED");
+                                                notifyDataSetChanged();
+                                            }
+                                            else {
+                                                Log.e("DEBUG","FAILED_UPDATE");
+                                                CustomToast failed = new CustomToast(context);
+                                                failed.showToast("Error while updating! Please refresh.");
+                                            }
+                                        }
+                                    });
                                     //holder.header.setBackgroundResource(tmp.StatusColor);
                                 }
                             })

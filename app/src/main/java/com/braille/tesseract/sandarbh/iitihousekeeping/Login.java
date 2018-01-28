@@ -223,10 +223,13 @@ public class Login extends AppCompatActivity {
                     dialog.dismiss();
 
                     FirebaseUser curr_user = authenticate.getCurrentUser();
-                    UserProfileChangeRequest updateProfile = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(email).build();
+                    if (curr_user.getDisplayName() == null) {
+                        UserProfileChangeRequest updateProfile = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(email).build();
 
-                    curr_user.updateProfile(updateProfile);
+                        curr_user.updateProfile(updateProfile);
+                        Log.e("DEBUG_LOGIN","USERNAME SET");
+                    }
 
                     Intent Enter = null;
 
