@@ -42,7 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Reques
         LayoutInflater inflater = LayoutInflater.from(context);
         View requestView = inflater.inflate(R.layout.request,parent,false);
 
-        Log.e("R","ONCREATE_VH...");
+        Log.e("R","ONCREATE_VH....");
         RequestHolder requestHolder = new RequestHolder(requestView);
         return requestHolder;
     }
