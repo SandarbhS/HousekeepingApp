@@ -50,21 +50,11 @@ import static com.braille.tesseract.sandarbh.iitihousekeeping.Login.actionBar;
 
 public class Supervisor_Activity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    private View reqView,timeSetter;
-    private AlertDialog.Builder request;
     private AlertDialog retry;
-    private RadioGroup radioGroup;
-    private EditText fromTime,toTime,remarks;
-    private CustomToast info,toast;
+    private CustomToast toast;
     private static TextView NAmsg;
-    private TextView roomNum;
 
-    private final String ADD_REQUEST = "Add New Request",MIN_TIME = "9 : 00  am",MAX_TIME = "4 : 59  pm",NO_TEXT = "N/A";
-    private final int FROM_TIME = 1,TO_TIME= 2,VALID = 3,INVALID = 4,INVALID_DIFFERENCE = 5;
-    private final long VALID_DIFFERENCE = 1800000;
-
-    private String currentTime,ROOM_NO = "407-E",USERNAME;
-    private int TOTAL_REQUESTS = 0;
+    private String USERNAME;
     private boolean exit = false,RETRY = false;
 
     private ArrayList<Request> requestsList;
@@ -80,7 +70,6 @@ public class Supervisor_Activity extends AppCompatActivity implements SwipeRefre
         setContentView(R.layout.activity_supervisor);
 
         toast = new CustomToast(getBaseContext());
-        info = new CustomToast(getBaseContext());
         NAmsg = findViewById(R.id.naMsg);
         NAmsg.setText(R.string.blank_page_supervisor);
         NAmsg.setVisibility(GONE);

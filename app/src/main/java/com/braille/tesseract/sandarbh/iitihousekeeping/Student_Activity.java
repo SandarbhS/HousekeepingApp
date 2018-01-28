@@ -65,8 +65,7 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
     private final int FROM_TIME = 1,TO_TIME= 2,VALID = 3,INVALID = 4,INVALID_DIFFERENCE = 5;
     private final long VALID_DIFFERENCE = 1800000;
 
-    private String currentTime,ROOM_NO = "407-E",USERNAME;
-    private int TOTAL_REQUESTS = 0;
+    private String currentTime,USERNAME;
     private boolean exit = false,RETRY = false;
 
     private ArrayList<Request> requestsList;
