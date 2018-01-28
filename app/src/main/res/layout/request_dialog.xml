@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reqroot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="39dp"
+            android:layout_marginStart="39dp"
+            android:layout_marginTop="20dp"
+            android:text="Room Number :" />
+
+        <TextView
+            android:id="@+id/roomnum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView"
+            android:layout_alignBottom="@+id/textView"
+            android:layout_marginLeft="59dp"
+            android:layout_marginStart="59dp"
+            android:layout_toEndOf="@+id/textView"
+            android:layout_toRightOf="@+id/textView"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView"
+            android:layout_alignStart="@+id/textView"
+            android:layout_below="@+id/textView"
+            android:layout_marginTop="19dp"
+            android:text="Preferred Time Slot :" />
+
+        <RadioGroup
+            android:id="@+id/radiogrp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/textView3"
+            android:layout_below="@id/textView3"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/any"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Any Time" />
+
+            <RadioButton
+                android:id="@+id/customTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Custom" />
+
+        </RadioGroup>
+
+        <RelativeLayout
+            android:id="@+id/customTimeRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/radiogrp"
+            android:layout_alignStart="@+id/radiogrp"
+            android:layout_below="@+id/radiogrp">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="10dp"
+                android:text="From :" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@+id/textView4"
+                android:layout_below="@+id/textView4"
+                android:layout_marginTop="25dp"
+                android:text="To :"
+                android:textAlignment="textEnd"
+                android:gravity="end"/>
+
+            <EditText
+                android:id="@+id/toTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView5"
+                android:layout_alignBottom="@+id/textView5"
+                android:layout_alignLeft="@+id/fromTime"
+                android:layout_alignStart="@+id/fromTime"
+                android:layout_marginBottom="10dp"
+                android:text="2 : 00  PM"
+                android:focusableInTouchMode="false"/>
+
+            <EditText
+                android:id="@+id/fromTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="22dp"
+                android:layout_marginStart="22dp"
+                android:layout_toEndOf="@+id/textView4"
+                android:layout_toRightOf="@+id/textView4"
+                android:layout_alignBaseline="@id/textView4"
+                android:text="9 : 00  AM"
+                android:focusableInTouchMode="false"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(The slot must\nbe of atleast\nhalf an hour)"
+                android:textAlignment="center"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@id/fromTime"
+                android:layout_marginLeft="10dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customTimeRoot"
+            android:layout_alignLeft="@id/customTimeRoot">
+
+            <EditText
+                android:id="@+id/remarks"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
+                android:text=""
+                android:textSize="20sp"
+                android:layout_toRightOf="@+id/rem"
+                android:layout_alignParentBottom="true" />
+
+            <TextView
+                android:id="@+id/rem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignBaseline="@id/remarks"
+                android:layout_centerVertical="true"
+                android:text="Remarks : " />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

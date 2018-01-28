@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "174333945286",
+    "firebase_url": "https://iiti-sandarbh.firebaseio.com",
+    "project_id": "iiti-sandarbh",
+    "storage_bucket": "iiti-sandarbh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174333945286:android:2ed03768bcae5bb6",
+        "android_client_info": {
+          "package_name": "com.braille.tesseract.sandarbh.iitihousekeeping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174333945286-fiamul63360eot14oh59tcp117hp3e5k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLxbEn1yHzdzYdLXT4NV9JB93n3CIWr-U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
