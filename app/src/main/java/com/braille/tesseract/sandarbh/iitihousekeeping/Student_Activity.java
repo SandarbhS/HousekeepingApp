@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,7 +47,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.view.View.GONE;
-import static com.braille.tesseract.sandarbh.iitihousekeeping.Login.actionBar;
+import static android.view.View.VISIBLE;
+import static com.braille.tesseract.sandarbh.iitihousekeeping.Login.toolbar;
 
 public class Student_Activity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -60,6 +62,7 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
     private ActionButton fab;
     private static TextView NAmsg;
     private TextView roomNum;
+    public static DrawerLayout drawer;
 
     private final String ADD_REQUEST = "Add New Request",MIN_TIME = "9 : 00  am",MAX_TIME = "4 : 59  pm",NO_TEXT = "N/A";
     private final int FROM_TIME = 1,TO_TIME= 2,VALID = 3,INVALID = 4,INVALID_DIFFERENCE = 5;
@@ -96,6 +99,7 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
         refreshLayout.setRefreshing(true);
 
         initActionBar();
+        initDrawer();
         initFAB();
         initRecyclerView();
         initTimeDialog();
@@ -103,7 +107,6 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
         initNewRequest();
         retry= Loading();
         getAvailableRequests();
-
     }
 
     public void initDatabase(){
@@ -179,9 +182,16 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
     }
 
     public void initActionBar(){
-        actionBar = findViewById(R.id.actionBar);
-        setSupportActionBar(actionBar);
+        toolbar = findViewById(R.id.actionBar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    private void initDrawer() {
+        drawer = findViewById(R.id.drawer);
+        DrawerFragment drawerFragment = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.drawer_fragment);
+        drawerFragment.initDrawer(drawer, toolbar);
     }
 
     public void initFAB(){
@@ -554,11 +564,12 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
     public void uploadDataToDatabase(){
 
         if (isConnectedToNetwork()) {
-            HashMap<String, Request> uploadMap = new HashMap<>();
+            Map<String, Request> uploadMap = new HashMap<>();
             for (Request tmp : requestsList) {
                 uploadMap.put("Request " + (requestsList.indexOf(tmp) + 1), tmp);
             }
             roomUser.setValue(uploadMap);
+            //roomUser.updateChildren(uploadMap);
 
             if (retry.isShowing()) {
                 retry.dismiss();
@@ -662,6 +673,11 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onBackPressed() {
+
+        if (drawer.isDrawerOpen(Gravity.START)) {
+            Log.e("DEBUG", "DRAWER OPEN");
+            drawer.closeDrawer(Gravity.START);
+        }
 
         if (exit){
             Log.e("dg",""+toast.isVisible()+" "+View.VISIBLE);

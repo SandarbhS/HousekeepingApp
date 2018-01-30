@@ -116,7 +116,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Reques
                                             }
                                         }
                                     });
-                                    //holder.header.setBackgroundResource(tmp.StatusColor);
+                                    //holder.header.setBackgroundResource(student_main.StatusColor);
                                 }
                             })
                             .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -176,7 +176,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Reques
                                             }
                                         }
                                     });
-                                    //holder.header.setBackgroundResource(tmp.StatusColor);
+                                    //holder.header.setBackgroundResource(student_main.StatusColor);
                                 }
                             })
                             .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {

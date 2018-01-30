@@ -29,16 +29,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class Login extends AppCompatActivity {
 
-    public static Toolbar actionBar;
+    public static Toolbar toolbar;
     private static EditText roomno,username,stupwd,suppwd;
     private static Button stulogin,suplogin;
     private static AlertDialog dialog;
@@ -60,9 +58,9 @@ public class Login extends AppCompatActivity {
 
         thisActivity = this;
 
-        actionBar = findViewById(R.id.actionBar);
-        setSupportActionBar(actionBar);
-        getSupportActionBar().setTitle("Login");
+        toolbar = findViewById(R.id.actionBar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Login - IITI Housekeeping");
 
         chooseLogin = findViewById(R.id.chooseLogin);
         pager = findViewById(R.id.pager);

@@ -22,7 +22,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
-    
+
     <style name="NumberPicker" parent="AppTheme">
         <item name="android:colorControlNormal">@color/colorPrimary</item>
         <item name="android:textColorPrimary">#000</item>
@@ -35,5 +35,9 @@
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

@@ -1,28 +1,20 @@
 package com.braille.tesseract.sandarbh.iitihousekeeping;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
-import android.support.annotation.IdRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,21 +24,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.scalified.fab.ActionButton;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static android.view.View.GONE;
-import static com.braille.tesseract.sandarbh.iitihousekeeping.Login.actionBar;
+import static com.braille.tesseract.sandarbh.iitihousekeeping.Login.toolbar;
+import static com.braille.tesseract.sandarbh.iitihousekeeping.Student_Activity.drawer;
 
 public class Supervisor_Activity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -84,10 +71,12 @@ public class Supervisor_Activity extends AppCompatActivity implements SwipeRefre
         refreshLayout.setRefreshing(true);
 
         initActionBar();
+        initDrawer();
         initRecyclerView();
         initDatabase();
         retry= Loading();
         getAvailableRequests();
+
 
     }
 
@@ -170,9 +159,15 @@ public class Supervisor_Activity extends AppCompatActivity implements SwipeRefre
     }
 
     public void initActionBar(){
-        actionBar = findViewById(R.id.actionBar);
-        setSupportActionBar(actionBar);
+        toolbar = findViewById(R.id.actionBar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+    }
+
+    private void initDrawer() {
+        drawer = findViewById(R.id.drawer);
+        DrawerFragment drawerFragment = (DrawerFragment) getSupportFragmentManager().findFragmentById(R.id.drawer_fragment);
+        drawerFragment.initDrawer(drawer, toolbar);
     }
 
     public void initRecyclerView(){
@@ -309,6 +304,11 @@ public class Supervisor_Activity extends AppCompatActivity implements SwipeRefre
 
     @Override
     public void onBackPressed() {
+
+        if (drawer.isDrawerOpen(Gravity.START)) {
+            Log.e("DEBUG", "DRAWER OPEN");
+            drawer.closeDrawer(Gravity.START);
+        }
 
         if (exit){
             //uploadDataToDatabase();

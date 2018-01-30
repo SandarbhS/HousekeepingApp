@@ -10,52 +10,23 @@
         layout="@layout/action_bar"
         />
 
-    <ImageView
-        android:id="@+id/bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/logo_edited"
-        android:alpha="0.2"/>
-
-    <!--<ListView-->
-        <!--android:id="@+id/request_listview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_below="@+id/actionBar"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_marginTop="15dp"/>-->
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/actionBar">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
+        <include layout="@layout/supervisor_main" />
+
+        <fragment
+            android:id="@+id/drawer_fragment"
+            android:layout_width="280dp"
             android:layout_height="match_parent"
-            android:layout_below="@id/actionBar"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:paddingTop="15dp" />
+            android:layout = "@layout/drawer_fragment"
+            android:name="com.braille.tesseract.sandarbh.iitihousekeeping.DrawerFragment"
+            android:layout_gravity = "start"
+            />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-
-    <TextView
-        android:id="@+id/naMsg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:textSize="30sp"
-        android:textColor="#969696"
-        android:alpha="1"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="262dp" />
+    </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>

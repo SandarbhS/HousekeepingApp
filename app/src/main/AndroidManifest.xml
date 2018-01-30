@@ -7,7 +7,7 @@
     <application
         android:name=".FirebaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/housekeeping_launcher_9"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -15,7 +15,7 @@
         <activity
             android:name=".Student_Activity"
             android:resizeableActivity="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Login"
             android:resizeableActivity="false"
@@ -26,7 +26,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Supervisor_Activity"></activity>
+        <activity android:name=".Supervisor_Activity" />
+        <activity
+            android:name=".nd"
+            android:label="@string/title_activity_nd"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -4,10 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
     android:background="#f2833e"
     android:title="Housekeeping"
     app:titleMarginStart="10dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="10dp"
     app:titleTextAppearance="@style/ActionBarStyle">
 
 </android.support.v7.widget.Toolbar>
