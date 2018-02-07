@@ -16,7 +16,8 @@ public class Request {
     public long uptime;
     public String Key;
 
-    public Request(String room,String time,String rem,boolean stu,boolean sup,int color,long up){
+    public Request(String key,String room,String time,String rem,boolean stu,boolean sup,int color,long up){
+        Key = key;
         RoomNo = room;
         TimeSlot = time;
         Remarks = rem;

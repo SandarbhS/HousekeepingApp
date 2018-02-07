@@ -27,10 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Supervisor_Activity" />
-        <activity
-            android:name=".nd"
-            android:label="@string/title_activity_nd"
-            android:theme="@style/AppTheme"></activity>
+
     </application>
 
 </manifest>

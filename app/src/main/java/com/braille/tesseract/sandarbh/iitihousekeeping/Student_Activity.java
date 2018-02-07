@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,8 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,7 +68,7 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
     public static DrawerLayout drawer;
 
     private final String ADD_REQUEST = "Add New Request",MIN_TIME = "9 : 00  am",MAX_TIME = "4 : 59  pm",NO_TEXT = "N/A";
-    private final int FROM_TIME = 1,TO_TIME= 2,VALID = 3,INVALID = 4,INVALID_DIFFERENCE = 5;
+    private final int FROM_TIME = 1,TO_TIME= 2,VALID = 3,INVALID = 4,INVALID_DIFFERENCE = 5,UPDATE = 6,WRAP = 7;
     private final long VALID_DIFFERENCE = 1800000;
 
     private String currentTime,USERNAME;
@@ -436,9 +439,32 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
                                 if (rem.equals(""))
                                     rem = NO_TEXT;
 
-                                requestsList.add(new Request(USERNAME,Time,rem,false,false,R.color.PendingRequest,new Date().getTime()));
+                                String reqKey = "Request "+(requestsList.size()+1);
+                                final Request newRequest = new Request(reqKey,USERNAME,Time,rem,false,false,R.color.PendingRequest,new Date().getTime());
+                                requestsList.add(newRequest);
                                 sortRequestsList();
                                 rAdapter.notifyDataSetChanged();
+
+                                if (isConnectedToNetwork()) {
+                                    roomUser.child(newRequest.Key).setValue(newRequest).addOnCompleteListener(Student_Activity.this, new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            if (!task.isSuccessful()) {
+                                                CustomToast noNetwork = new CustomToast(Student_Activity.this);
+                                                noNetwork.showToast("Couldn't upload request.");
+                                                requestsList.remove(0);
+                                                rAdapter.notifyItemRangeChanged(0, requestsList.size());
+                                            }
+                                        }
+                                    });
+                                }
+                                else{
+                                    CustomToast noNetwork = new CustomToast(Student_Activity.this);
+                                    noNetwork.showToast("No Internet Connection. Please retry!");
+                                    requestsList.remove(0);
+                                    rAdapter.notifyItemRangeChanged(0, requestsList.size());
+                                }
                                 //rAdapter.notifyItemInserted(0);
                                 if (NAmsg.getVisibility() == View.VISIBLE)
                                     NAmsg.setVisibility(View.INVISIBLE);
@@ -565,18 +591,19 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
 
         if (isConnectedToNetwork()) {
             Map<String, Request> uploadMap = new HashMap<>();
-            for (Request tmp : requestsList) {
-                uploadMap.put("Request " + (requestsList.indexOf(tmp) + 1), tmp);
-            }
-            roomUser.setValue(uploadMap);
-            //roomUser.updateChildren(uploadMap);
 
-            if (retry.isShowing()) {
-                retry.dismiss();
-                CustomToast done = new CustomToast(this);
-                done.showToast("Done!");
-            }
-            finish();
+                for (Request tmp : requestsList) {
+                    uploadMap.put(tmp.Key, tmp);
+                }
+                roomUser.setValue(uploadMap);
+                //roomUser.updateChildren(uploadMap);
+
+                if (retry.isShowing()) {
+                    retry.dismiss();
+                    CustomToast done = new CustomToast(this);
+                    done.showToast("Done!");
+                }
+                finish();
 
         }
         else {
@@ -681,7 +708,7 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
 
         if (exit){
             Log.e("dg",""+toast.isVisible()+" "+View.VISIBLE);
-            FirebaseAuth.getInstance().signOut();
+            //FirebaseAuth.getInstance().signOut();
             uploadDataToDatabase();
         }
         else{

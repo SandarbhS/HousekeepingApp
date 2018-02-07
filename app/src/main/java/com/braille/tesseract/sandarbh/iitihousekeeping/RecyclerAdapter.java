@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -150,6 +151,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Reques
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(context)
+                            .setCancelable(false)
                             .setTitle("Confirm Approval")
                             .setMessage("Are you sure you you want to mark this request complete?\nThis cannot be undone!")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -236,13 +238,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Reques
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dataList.remove(index);
-                        if (dataList.size() == 0)
-                            Student_Activity.toggleMessageVisibility();
 
-                        notifyItemRemoved(index);
-                        notifyItemRangeChanged(0,dataList.size());
-                        //notifyDataSetChanged();
+                        if (isConnectedToNetwork()){
+                            updateDatabase(index);
+                        }
+                        else {
+                            CustomToast noNetwork = new CustomToast(context);
+                            noNetwork.showToast("No Internet Connection. Please retry!");
+                        }
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -253,6 +256,41 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Reques
                 });
         AlertDialog warning = alert.create();
         warning.show();
+    }
+
+    public boolean isConnectedToNetwork(){
+
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm.getActiveNetworkInfo() != null) {
+            Log.e("DEBUG", "OK");
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private void updateDatabase(final int index){
+
+        DatabaseReference request = FirebaseDatabase.getInstance().getReference().child(dataList.get(index).RoomNo).child(dataList.get(index).Key);
+        request.removeValue().addOnCompleteListener((Activity) context, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    dataList.remove(index);
+                    if (dataList.size() == 0)
+                        Student_Activity.toggleMessageVisibility();
+
+                    notifyItemRemoved(index);
+                    notifyItemRangeChanged(0,dataList.size());
+                }
+
+                else {
+                    CustomToast failure = new CustomToast(context);
+                    failure.showToast("Failed to delete the request!");
+                }
+            }
+        });
+
     }
 
 }
