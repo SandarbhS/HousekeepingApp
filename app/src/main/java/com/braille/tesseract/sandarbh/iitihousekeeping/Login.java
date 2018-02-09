@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,12 +20,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.support.design.widget.TabLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,6 +45,8 @@ public class Login extends AppCompatActivity {
     private static EditText roomno,username,stupwd,suppwd;
     private static Button stulogin,suplogin;
     private static AlertDialog dialog;
+    private TextView title,subtitle;
+    private ImageView background;
 
     private boolean exit = false;
     private static final int STUDENT_LOGIN = 1,SUPERVISOR_LOGIN = 2;
@@ -59,8 +66,13 @@ public class Login extends AppCompatActivity {
         thisActivity = this;
 
         toolbar = findViewById(R.id.actionBar);
+        title = findViewById(R.id.toolbar_title);
+        title.setTextColor(getResources().getColor(R.color.titleColor));
+
+        subtitle = findViewById(R.id.toolbar_subtitle);
+        subtitle.setTextColor(getResources().getColor(R.color.titleColor));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Login - IITI Housekeeping");
+        getSupportActionBar().setTitle("");
 
         chooseLogin = findViewById(R.id.chooseLogin);
         pager = findViewById(R.id.pager);
@@ -71,6 +83,22 @@ public class Login extends AppCompatActivity {
 
         authenticate = FirebaseAuth.getInstance();
         dialog = Loading();
+
+        initBG();
+
+    }
+
+    private void initBG(){
+
+        background = findViewById(R.id.bg);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.bg_abstract,options);
+
+        background.setImageBitmap(bmp);
+        background.setAlpha((float)1.0);
+        background.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        Log.e("BITMAP",""+bmp.getHeight()+" "+bmp.getWidth());
     }
 
     @Override

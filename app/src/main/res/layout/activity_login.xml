@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.braille.tesseract.sandarbh.iitihousekeeping.Login"
-    tools:ignore="HardcodedText">
+    tools:ignore="HardcodedText"
+    android:background="#fafafa">
 
     <include android:id="@+id/actionBar"
         layout="@layout/action_bar" />
@@ -16,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/actionBar"
-        android:background="#fff"
+        android:background="#fafafa"
         android:alpha="0.8"
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabMode="fixed"
@@ -27,10 +28,8 @@
         android:id="@+id/bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/logo_edited"
         android:layout_below="@id/chooseLogin"
-        android:paddingBottom="40dp"
-        android:alpha="0.4"/>
+        android:paddingBottom="0dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

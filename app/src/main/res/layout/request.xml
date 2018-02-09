@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/ClearedRequest"
+        android:background="@drawable/request_top_cleared"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp">
 
@@ -21,7 +21,6 @@
             android:textStyle="bold"
             android:paddingLeft="20dp"
             android:layout_weight="2"
-            android:textColor="@color/colorText"
             style="@style/RequestBar"/>
 
         <Button
@@ -30,7 +29,7 @@
             android:layout_height="20dp"
             android:background="@drawable/cancel_req_button"
             android:text="X"
-            android:textColor="@color/titleColor"
+            android:textColor="@color/ClearedRequest"
             android:textSize="15sp"
             android:layout_margin="5dp"
             android:layout_gravity="center_vertical" />
@@ -47,28 +46,44 @@
         android:orientation="horizontal"
         android:background="@color/RequestBoxBG">
 
+    <LinearLayout
+        android:id="@+id/ll1a"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:background="@color/RequestBoxBG">
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/req_header"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|end"
             android:text="Time Slot : "
-            android:textAlignment="center"
             android:layout_margin="10dp"
-            android:layout_weight="1"
+            android:paddingRight="40dp"
             android:textSize="15sp"/>
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/timeslot"
-            android:layout_width="36dp"
+        <LinearLayout
+            android:id="@+id/ll1b"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_below="@id/req_header"
-            android:gravity="center_vertical"
-            android:text="9:00 am to 5:00 pm"
-            android:layout_margin="10dp"
-            android:layout_weight="2"
-            android:textSize="15sp"/>
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:background="@color/RequestBoxBG">
 
+            <TextView
+                android:id="@+id/timeslot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/req_header"
+                android:gravity="center_vertical|start"
+                android:text="9:00 am to 5:00 pm"
+                android:layout_margin="10dp"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -83,27 +98,46 @@
         android:orientation="horizontal"
         android:background="@color/RequestBoxBG">
 
-        <TextView
-            android:layout_width="75dp"
+        <LinearLayout
+            android:id="@+id/ll2a"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_below="@id/req_header"
-            android:gravity="center_vertical"
-            android:text="Remarks : "
-            android:textAlignment="center"
-            android:layout_margin="10dp"
+            android:orientation="horizontal"
             android:layout_weight="1"
-            android:textSize="15sp"/>
+            android:background="@color/RequestBoxBG">
 
-        <TextView
-            android:id="@+id/remarks"
-            android:layout_width="36dp"
+            <TextView
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:layout_below="@id/req_header"
+                android:gravity="center_vertical|end"
+                android:text="Remarks : "
+                android:layout_margin="10dp"
+                android:paddingRight="40dp"
+                android:layout_weight="1"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll2b"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_below="@id/req_header"
-            android:gravity="center_vertical"
-            android:text="N/A"
-            android:layout_margin="10dp"
-            android:layout_weight="2"
-            android:textSize="15sp"/>
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:background="@color/RequestBoxBG">
+
+            <TextView
+                android:id="@+id/remarks"
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                android:layout_below="@id/req_header"
+                android:gravity="center_vertical|start"
+                android:text="N/A"
+                android:layout_margin="10dp"
+                android:layout_weight="2"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
 
 
     </LinearLayout>
@@ -120,7 +154,7 @@
         android:background="@color/RequestBoxBG">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center_vertical">
@@ -129,20 +163,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/req_header"
-                android:gravity="center_vertical"
+                android:gravity="center_vertical|end"
                 android:text="Approved : "
-                android:textAlignment="center"
                 android:layout_margin="10dp"
+                android:paddingRight="40dp"
                 android:layout_weight="1"
                 android:textSize="15sp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="36dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="2.30">
+            android:layout_weight="1">
 
             <CheckBox
                 android:id="@+id/checkSup"
@@ -150,8 +184,7 @@
                 android:layout_height="30dp"
                 android:gravity="center_vertical"
                 android:textSize="15sp"
-                android:text="Supervisor"
-                android:layout_margin="10dp"/>
+                android:text="Supervisor" />
 
             <CheckBox
                 android:id="@+id/checkStu"
@@ -159,8 +192,7 @@
                 android:layout_height="30dp"
                 android:gravity="center_vertical"
                 android:textSize="15sp"
-                android:text="Student"
-                android:layout_marginLeft="10dp" />
+                android:text="Student" />
 
         </LinearLayout>
     </LinearLayout>
@@ -181,7 +213,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="20dp"
-        android:background="@color/RequestBoxBG"
+        android:paddingRight="10dp"
+        android:background="@drawable/request_shape_bottom"
         android:text="few minutes ago"
         android:textAlignment="textEnd"
         android:textColor="#77000000"

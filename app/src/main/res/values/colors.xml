@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#f2833e</color>
-    <color name="colorPrimaryDark">#c46a33</color>
-    <color name="colorAccent">#248232</color>
+    <color name="colorPrimary">#028090</color>
+    <color name="colorPrimaryDark">#114b5f</color>
+    <color name="colorAccent">#125166</color>
     <color name="colorText">#54494b</color>
-    <color name="titleColor">#f1f7ed</color>
-    <color name="BGloginButton">#e08e45</color>
+    <color name="titleColor">#ffffff</color>
+    <color name="BGloginButton">#f6bd60</color>
     <color name="Background">#32292f</color>
-    <color name="PendingRequest">#efec39</color>
-    <color name="ClearedRequest">#1dd132</color>
-    <color name="CancelButtonBG">#ff1414</color>
-    <color name="RequestBoxBG">#fff8d1</color>
+    <color name="PendingRequest">#f4716e</color>
+    <color name="ClearedRequest">#198223</color>
+    <color name="CancelButtonBG">#ff5a5f</color>
+    <color name="RequestBoxBG">#f2f5ea</color>
+
+    <!--<color name="colorPrimary">#f2833e</color>-->
+    <!--<color name="colorPrimaryDark">#c46a33</color>-->
+    <!--<color name="colorAccent">#125166</color>-->
+    <!--<color name="BGloginButton">#e08e45</color>-->
+
 </resources>

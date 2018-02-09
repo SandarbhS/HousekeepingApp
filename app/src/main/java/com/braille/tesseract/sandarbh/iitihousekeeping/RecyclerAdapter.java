@@ -63,11 +63,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Reques
         if (holder.checkStu.isChecked() && holder.checkSup.isChecked()) {
             Log.e("R","Color Changed");
             tmp.StatusColor = R.color.ClearedRequest;
+            holder.header.setBackgroundResource(R.drawable.request_top_cleared);
+            holder.cancel.setTextColor(context.getResources().getColor(R.color.ClearedRequest));
         }
-        else
+        else {
             tmp.StatusColor = R.color.PendingRequest;
+            holder.header.setBackgroundResource(R.drawable.request_top_pending);
+            holder.cancel.setTextColor(context.getResources().getColor(R.color.PendingRequest));
+        }
 
-        holder.header.setBackgroundResource(tmp.StatusColor);
 
         long timeDifference = (new Date().getTime()-tmp.uptime);
 

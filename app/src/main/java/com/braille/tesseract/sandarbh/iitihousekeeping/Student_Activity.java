@@ -3,6 +3,7 @@ package com.braille.tesseract.sandarbh.iitihousekeeping;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -64,7 +66,7 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
     private CustomToast info,toast;
     private ActionButton fab;
     private static TextView NAmsg;
-    private TextView roomNum;
+    private TextView roomNum,title,subtitle;
     public static DrawerLayout drawer;
 
     private final String ADD_REQUEST = "Add New Request",MIN_TIME = "9 : 00  am",MAX_TIME = "4 : 59  pm",NO_TEXT = "N/A";
@@ -110,6 +112,8 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
         initNewRequest();
         retry= Loading();
         getAvailableRequests();
+
+        Log.e("snds",""+new Random().nextInt(1000));
     }
 
     public void initDatabase(){
@@ -186,8 +190,13 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
 
     public void initActionBar(){
         toolbar = findViewById(R.id.actionBar);
+        title = findViewById(R.id.toolbar_title);
+        title.setTextColor(getResources().getColor(R.color.titleColor));
+
+        subtitle = findViewById(R.id.toolbar_subtitle);
+        subtitle.setTextColor(getResources().getColor(R.color.titleColor));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
@@ -205,8 +214,8 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
         fab.setImageSize(35.0f);
         fab.setRippleEffectEnabled(true);
 
-        fab.setButtonColor(getResources().getColor(R.color.fab_appthemeorange_500));
-        fab.setButtonColorPressed(getResources().getColor(R.color.fab_appthemeorange_900));
+        fab.setButtonColor(getResources().getColor(R.color.BGloginButton));
+        fab.setButtonColorPressed(getResources().getColor(R.color.fab_apptheme_900));
 
         fab.setShowAnimation(ActionButton.Animations.JUMP_FROM_DOWN);
         fab.setHideAnimation(ActionButton.Animations.JUMP_TO_DOWN);
@@ -439,7 +448,7 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
                                 if (rem.equals(""))
                                     rem = NO_TEXT;
 
-                                String reqKey = "Request "+(requestsList.size()+1);
+                                String reqKey = "R"+Math.abs(new Random().nextInt());
                                 final Request newRequest = new Request(reqKey,USERNAME,Time,rem,false,false,R.color.PendingRequest,new Date().getTime());
                                 requestsList.add(newRequest);
                                 sortRequestsList();
