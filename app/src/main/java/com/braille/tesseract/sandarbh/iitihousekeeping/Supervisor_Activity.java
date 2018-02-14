@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -76,7 +77,7 @@ public class Supervisor_Activity extends AppCompatActivity implements SwipeRefre
         initDatabase();
         retry= Loading();
         getAvailableRequests();
-
+        checkDailyMessage();
 
     }
 
@@ -90,6 +91,52 @@ public class Supervisor_Activity extends AppCompatActivity implements SwipeRefre
         Log.e("DEBUG_Sup","Username: "+USERNAME);
     }
 
+    private void checkDailyMessage(){
+
+        DB.child("Message").child("Daily Message").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String message = (String) dataSnapshot.getValue();
+
+                if (!message.equals("N/A")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Supervisor_Activity.this)
+                            .setTitle("Daily Message")
+                            .setMessage("\n"+message)
+                            .setNeutralButton("DISMISS",null);
+                    AlertDialog dialog = builder.create();
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DB.child("Message").child("Latest Version").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String latestVersion = (String) dataSnapshot.getValue();
+
+                if (!latestVersion.equals(BuildConfig.VERSION_NAME)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Supervisor_Activity.this)
+                            .setTitle("UPDATE AVAILABLE")
+                            .setMessage("A newer version "+latestVersion+" of app is available. Please update your app.")
+                            .setNeutralButton("OK",null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void getAvailableRequests(){
 
         if (isConnectedToNetwork()) {
@@ -100,6 +147,10 @@ public class Supervisor_Activity extends AppCompatActivity implements SwipeRefre
 
                     for (DataSnapshot rooms : dataSnapshot.getChildren()) {
                         Log.e("cdc","Room : "+rooms.toString());
+
+                        if (rooms.getKey().equals("Message")){
+                            continue;
+                        }
                         @SuppressWarnings("unchecked")
                         HashMap<String, HashMap> map = (HashMap<String, HashMap>) rooms.getValue();
                         if (map == null) {
@@ -159,9 +210,17 @@ public class Supervisor_Activity extends AppCompatActivity implements SwipeRefre
     }
 
     public void initActionBar(){
+        TextView title,subtitle;
+
         toolbar = findViewById(R.id.actionBar);
+        title = findViewById(R.id.toolbar_title);
+        title.setTextColor(getResources().getColor(R.color.titleColor));
+
+        subtitle = findViewById(R.id.toolbar_subtitle);
+        subtitle.setTextColor(getResources().getColor(R.color.titleColor));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     private void initDrawer() {

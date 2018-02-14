@@ -4,29 +4,32 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.support.design.widget.TabLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -57,6 +60,7 @@ public class Login extends AppCompatActivity {
 
     private static FirebaseAuth authenticate;
     private FirebaseUser user;
+    private static SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,18 +108,25 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Intent redirect;
-        user = authenticate.getCurrentUser();
-        if (user != null) {
-            if (user.getDisplayName().equals("SUPERVISOR"))
-                redirect = new Intent(thisActivity, Supervisor_Activity.class);
 
-            else
-                redirect = new Intent(thisActivity, Student_Activity.class);
-            //redirect.putExtra("User",user.getDisplayName());
-            Log.e("DEBUG_Login",""+user.getDisplayName());
-            startActivity(redirect);
-            thisActivity.finish();
+        preferences  = getSharedPreferences("Login_Details",MODE_PRIVATE);
+
+        boolean logged_in = preferences.getBoolean("LOGGED IN",false);
+        if (logged_in) {
+            Intent redirect;
+
+            String USERNAME = preferences.getString("USERNAME",null);
+            if (USERNAME!=null) {
+                if (USERNAME.equals("SUPERVISOR"))
+                    redirect = new Intent(thisActivity, Supervisor_Activity.class);
+
+                else
+                    redirect = new Intent(thisActivity, Student_Activity.class);
+                //redirect.putExtra("User",user.getDisplayName());
+                Log.e("DEBUG_Login", "" + USERNAME);
+                startActivity(redirect);
+                thisActivity.finish();
+            }
         }
     }
 
@@ -175,17 +186,17 @@ public class Login extends AppCompatActivity {
 
             switch (code){
 
-                case 0 : View student_login = inflater.inflate(R.layout.student_login,container,false);
+                case 0 : final View student_login = inflater.inflate(R.layout.student_login,container,false);
 
                     roomno = student_login.findViewById(R.id.roomno);
                     stupwd = student_login.findViewById(R.id.stupwd);
                     stulogin = student_login.findViewById(R.id.stulogin);
 
-
                     stulogin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
+                            Log.e("BUTTON","Clicked");
                             final String email = roomno.getText().toString().trim();
                             String password = stupwd.getText().toString();
 
@@ -200,6 +211,26 @@ public class Login extends AppCompatActivity {
                                 Log.e("DEBUG", "EXECUTING");
                                 loginUser(email,password,STUDENT_LOGIN);
                             }
+                        }
+                    });
+
+                    stupwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+
+                            if (i == EditorInfo.IME_ACTION_GO){
+                                stulogin.performClick();
+
+                                View view = thisActivity.getCurrentFocus();
+                                if (view != null) {
+                                    InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                }
+
+                                Log.e("KEYBOARD","Clicked");
+                                return true;
+                            }
+                            return false;
                         }
                     });
 
@@ -232,6 +263,26 @@ public class Login extends AppCompatActivity {
                         }
                     });
 
+                    suppwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+
+                            if (i == EditorInfo.IME_ACTION_GO){
+                                suplogin.performClick();
+
+                                View view = thisActivity.getCurrentFocus();
+                                if (view != null) {
+                                    InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                }
+
+                                Log.e("KEYBOARD","Clicked");
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+
                     return supervisor_login;
             }
 
@@ -248,46 +299,33 @@ public class Login extends AppCompatActivity {
                     Log.e("DEBUG", "SUCCESS");
                     dialog.dismiss();
 
+                    SharedPreferences.Editor prefEditor = preferences.edit();
+                    prefEditor.putString("USERNAME",email);
+                    prefEditor.putBoolean("LOGGED IN",true);
+                    prefEditor.apply();
+
+                    Log.e("DEBUG_LOGIN",preferences.getBoolean("LOGGED IN",false)+"");
+
                     FirebaseUser curr_user = authenticate.getCurrentUser();
                     if (curr_user.getDisplayName() == null) {
                         UserProfileChangeRequest updateProfile = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(email).build();
 
-                        curr_user.updateProfile(updateProfile);
-                        Log.e("DEBUG_LOGIN","USERNAME SET");
+                        curr_user.updateProfile(updateProfile).addOnCompleteListener(thisActivity, new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Log.e("DEBUG_LOGIN","USERNAME SET");
+                                    redirect(email,code);
+                                }
+                            }
+                        });
                     }
+                    else
+                        redirect(email,code);
 
-                    Intent Enter = null;
-
-                    switch (code){
-
-                        case STUDENT_LOGIN : if (email.equals("SUPERVISOR")) {
-                            CustomToast invalid = new CustomToast(thisActivity);
-                            invalid.showToast("Invalid Credentials!");
-                        }
-                        else
-                            Enter = new Intent(thisActivity,Student_Activity.class);
-
-                            break;
-
-                        case SUPERVISOR_LOGIN : if (email.equals("SUPERVISOR")) {
-                            Enter = new Intent(thisActivity,Supervisor_Activity.class);
-                        }
-                        else {
-                            CustomToast invalid = new CustomToast(thisActivity);
-                            invalid.showToast("Invalid Credentials!");
-                        }
-
-                            break;
-                    }
-
-                    if (Enter!=null) {
-                        Enter.putExtra("User", email);
-                        thisActivity.startActivity(Enter);
-                        thisActivity.finish();
-                    }
-
-                } else {
+                }
+                else {
                     //task.getResult();
                     Log.e("DEBUG", "FAILED");
                     dialog.dismiss();
@@ -297,6 +335,38 @@ public class Login extends AppCompatActivity {
             }
 
         });
+    }
+
+    private static void redirect(String email,int code){
+        Intent Enter = null;
+
+        switch (code){
+
+            case STUDENT_LOGIN : if (email.equals("SUPERVISOR")) {
+                CustomToast invalid = new CustomToast(thisActivity);
+                invalid.showToast("Invalid Credentials!");
+            }
+            else
+                Enter = new Intent(thisActivity,Student_Activity.class);
+
+                break;
+
+            case SUPERVISOR_LOGIN : if (email.equals("SUPERVISOR")) {
+                Enter = new Intent(thisActivity,Supervisor_Activity.class);
+            }
+            else {
+                CustomToast invalid = new CustomToast(thisActivity);
+                invalid.showToast("Invalid Credentials!");
+            }
+
+                break;
+        }
+
+        if (Enter!=null) {
+            Enter.putExtra("User", email);
+            thisActivity.startActivity(Enter);
+            thisActivity.finish();
+        }
     }
 
     private static AlertDialog Loading(){

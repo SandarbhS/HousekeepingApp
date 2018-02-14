@@ -21,6 +21,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -118,12 +119,59 @@ public class Student_Activity extends AppCompatActivity implements SwipeRefreshL
 
     public void initDatabase(){
         DB = FirebaseDatabase.getInstance().getReference();
-        USERNAME = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        checkDailyMessage();
+        USERNAME = getSharedPreferences("Login_Details",MODE_PRIVATE).getString("USERNAME",null);
 
         assert USERNAME != null;
         roomUser = DB.child(USERNAME);
 
         Log.e("DEBUG_Main","RoomNo: "+USERNAME);
+    }
+
+    private void checkDailyMessage(){
+
+        DB.child("Message").child("Daily Message").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String message = (String) dataSnapshot.getValue();
+
+                if (!message.equals("N/A")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Student_Activity.this)
+                            .setTitle("Daily Message")
+                            .setMessage("\n"+message)
+                            .setNeutralButton("DISMISS",null);
+                    AlertDialog dialog = builder.create();
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DB.child("Message").child("Latest Version").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String latestVersion = (String) dataSnapshot.getValue();
+
+                if (!latestVersion.equals(BuildConfig.VERSION_NAME)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Student_Activity.this)
+                            .setTitle("UPDATE AVAILABLE")
+                            .setMessage("A newer version "+latestVersion+" of app is available. Please update your app.")
+                            .setNeutralButton("OK",null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void getAvailableRequests(){

@@ -42,6 +42,7 @@
                 android:layout_marginRight="20dp"
                 android:hint="Password"
                 android:inputType="textPassword"
+                android:imeOptions="actionGo"
                 android:layout_weight="1"
                 android:backgroundTint="#283f3b"/>
 
